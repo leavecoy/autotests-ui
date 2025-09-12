@@ -8,8 +8,6 @@ class DashboardPage(BasePage):
 
         self.dashboard_title = page.get_by_test_id('dashboard-toolbar-title-text')
 
-    # Критерий оценки: "Реализован метод, который проверяет видимость и ТЕКСТ заголовка “Dashboard”
-    # Я бы разбил метод на два разных, но ТЗ есть ТЗ
-    def expect_dashboard_title_is_visible_and_have_text(self, text: str):
+    def expect_dashboard_title_is_visible(self):
         expect(self.dashboard_title).to_be_visible()
-        expect(self.dashboard_title).to_have_text(text)
+        expect(self.dashboard_title).to_have_text('Dashboard')

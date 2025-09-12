@@ -5,8 +5,8 @@ from pages.registration_page import RegistrationPage
 @pytest.mark.regression
 @pytest.mark.registration
 @pytest.mark.parametrize(
-    'email, username, password, dashboard_text',
-    [('user.name@gmail.com', 'username', 'password', 'Dashboard')]
+    'email, username, password',
+    [('user.name@gmail.com', 'username', 'password')]
 )
 def test_succesful_registration(
         registration_page: RegistrationPage,
@@ -14,9 +14,8 @@ def test_succesful_registration(
         email: str,
         username: str,
         password: str,
-        dashboard_text: str
 ):
     registration_page.visit('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/registration')
     registration_page.fill_registration_form(email, username, password)
     registration_page.click_registration_button()
-    dashboard_page.expect_dashboard_title_is_visible_and_have_text(dashboard_text)
+    dashboard_page.expect_dashboard_title_is_visible()
