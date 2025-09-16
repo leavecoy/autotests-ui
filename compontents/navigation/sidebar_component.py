@@ -1,8 +1,7 @@
 import re
-
 from compontents.base_component import BaseComponent
 from compontents.navigation.sidebar_list_item_component import SidebarListItemComponent
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
 class SidebarComponent(BaseComponent):
     def __init__(self, page: Page):
