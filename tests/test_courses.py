@@ -1,4 +1,3 @@
-from playwright.sync_api import expect, Page
 import pytest
 from pages.create_course_page import CreateCoursePage
 from pages.courses_list_page import CoursesListPage
@@ -26,10 +25,7 @@ def test_create_course(create_course_page: CreateCoursePage, courses_list_page: 
     create_course_page.visit('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses/create')
 
     # Проверить наличие заголовка "Create course"
-    create_course_page.check_visible_create_course_title()
-
-    # Проверить, что кнопка создания курса недоступна для нажатия
-    create_course_page.check_disabled_create_course_button()
+    create_course_page.create_course_toolbar.check_visible(is_create_course_disabled=True)
 
     # Убедиться, что отображается пустой блок для предпросмотра изображения
     create_course_page.image_upload_widget.check_visible()
@@ -38,7 +34,7 @@ def test_create_course(create_course_page: CreateCoursePage, courses_list_page: 
     create_course_page.image_upload_widget.check_visible(is_image_uploaded=False)
 
     # Проверить, что форма создания курса отображается и содержит значения по умолчанию
-    create_course_page.check_visible_create_course_form(
+    create_course_page.create_course_form.check_visible(
         title='',
         estimated_time='',
         description='',
@@ -47,10 +43,7 @@ def test_create_course(create_course_page: CreateCoursePage, courses_list_page: 
     )
 
     # Проверить наличие заголовка "Exercises"
-    create_course_page.check_visible_exercise_title()
-
-    # Проверить наличие кнопки создания задания
-    create_course_page.check_visible_create_exercise_button()
+    create_course_page.create_course_exercises_toolbar.check_visible_exercise_title()
 
     # Убедиться, что отображается блок с пустыми заданиями
     create_course_page.check_visible_exercises_empty_view()
@@ -62,7 +55,7 @@ def test_create_course(create_course_page: CreateCoursePage, courses_list_page: 
     create_course_page.image_upload_widget.check_visible(is_image_uploaded=True)
 
     # Заполнить форму создания курса значениями
-    create_course_page.fill_create_course_form(
+    create_course_page.create_course_form.fill(
         title="Playwright",
         estimated_time="2 weeks",
         description="Playwright",
@@ -71,7 +64,7 @@ def test_create_course(create_course_page: CreateCoursePage, courses_list_page: 
     )
 
     # Нажать на кнопку создания курса
-    create_course_page.click_create_course_button()
+    create_course_page.create_course_toolbar.click_create_course_button()
 
     # Проверить наличие заголовка "Courses"
     courses_list_page.toolbar_view.check_visible()

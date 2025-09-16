@@ -1,4 +1,3 @@
-from playwright.sync_api import expect, Page
 import pytest
 from pages.login_page import LoginPage
 
@@ -10,6 +9,6 @@ from pages.login_page import LoginPage
 )
 def test_wrong_email_or_password_authorization(login_page: LoginPage, email: str, password: str):
     login_page.visit('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/login')
-    login_page.fill_login_form(email=email, password=password)
+    login_page.form.fill(email=email, password=password)
     login_page.click_login_button()
     login_page.check_wrong_email_or_password_alert()
