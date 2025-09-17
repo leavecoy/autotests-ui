@@ -77,3 +77,55 @@ class TestCourses:
             min_score='10',
             estimated_time='2 weeks'
         )
+
+    def test_edit_course(self, create_course_page: CreateCoursePage, courses_list_page: CoursesListPage):
+        # Переход на страницу создания курса
+        create_course_page.visit('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses/create')
+
+        # Заполнение формы валидными данными
+        create_course_page.create_course_form.fill(
+            title='UI Course',
+            estimated_time='1h',
+            description='Course about QA automation',
+            max_score='10',
+            min_score='1'
+        )
+
+        # Загрузка изображения
+        create_course_page.image_upload_widget.upload_preview_image(file='./testdata/files/image.png')
+
+        # Нажатие на кнопку создания курса
+        create_course_page.create_course_toolbar.click_create_course_button()
+
+        # Проверка, что на странице списка курсов появилась карточка созданного курса
+        courses_list_page.course_view.check_visible(
+            index=0,
+            title='UI Course',
+            max_score='10',
+            min_score='1',
+            estimated_time='1h'
+        )
+
+        # Переход в режим редактирования через меню карточки
+        courses_list_page.course_view.menu.click_edit(index=0)
+
+        # Изменение всех полей формы
+        create_course_page.create_course_form.fill(
+            title='Edited title',
+            estimated_time='2h',
+            description='Edited description',
+            max_score='5',
+            min_score='2'
+        )
+
+        # Сохранение изменений
+        create_course_page.create_course_toolbar.click_create_course_button()
+
+        # Проверка, что карточка курса обновилась и отображает новые данные
+        courses_list_page.course_view.check_visible(
+            index=0,
+            title='Edited title',
+            max_score='5',
+            min_score='2',
+            estimated_time='2h'
+        )
