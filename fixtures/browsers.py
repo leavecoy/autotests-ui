@@ -1,5 +1,7 @@
 import pytest
-from playwright.sync_api import sync_playwright, Page, Playwright
+from playwright.sync_api import Page, Playwright
+from pages.authentication.registration_page import RegistrationPage
+
 
 @pytest.fixture
 def chromium_page(playwright: Playwright) -> Page:
@@ -14,23 +16,10 @@ def initialize_browser_state(playwright : Playwright):
     context = browser.new_context()
     page = context.new_page()
 
-    page.goto('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/registration')
-
-    # Находим и заполняем поле Email
-    email_input = page.get_by_test_id('registration-form-email-input').locator('input')
-    email_input.fill('user.name@gmail.com')
-
-    # Находим и заполняем поле Username
-    username_input = page.get_by_test_id('registration-form-username-input').locator('input')
-    username_input.fill('username')
-
-    # Находим и заполняем поле Password
-    password_input = page.get_by_test_id('registration-form-password-input').locator('input')
-    password_input.fill('password')
-
-    # Нажимаем кнопку регистрации
-    reg_btn = page.get_by_test_id('registration-page-registration-button')
-    reg_btn.click()
+    registration_page = RegistrationPage(page=page)
+    registration_page.visit('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/registration')
+    registration_page.form.fill(email='user.name@gmail.com', username='username', password='password')
+    registration_page.click_registration_button()
 
     # Сохраняем состояние браузера
     context.storage_state(path='browser-state.json')
@@ -40,7 +29,7 @@ def initialize_browser_state(playwright : Playwright):
 def chromium_page_with_state(initialize_browser_state, playwright : Playwright) -> Page:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context(storage_state='browser-state.json')
-    page = context.new_page()
+    context.new_page()
 
     yield page
 
