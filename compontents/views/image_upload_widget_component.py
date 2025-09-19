@@ -7,7 +7,6 @@ from elements.text import Text
 from elements.button import Button
 from elements.file_input import FileInput
 
-
 class ImageUploadWidgetComponent(BaseComponent):
     def __init__(self, page: Page, identifier: str):
         super().__init__(page)

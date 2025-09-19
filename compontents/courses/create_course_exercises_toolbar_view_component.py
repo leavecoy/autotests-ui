@@ -1,7 +1,8 @@
 from compontents.base_component import BaseComponent
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 from elements.text import Text
 from elements.button import Button
+import allure
 
 class CreateCourseExercisesToolbarViewComponent(BaseComponent):
     def __init__(self, page: Page):
@@ -12,6 +13,7 @@ class CreateCourseExercisesToolbarViewComponent(BaseComponent):
             page, 'create-course-exercises-box-toolbar-create-exercise-button', 'Create exercise'
         )
 
+    @allure.step('Check visible exercises toolbar')
     def check_visible_exercise_title(self):
         self.title.check_visible()
         self.title.check_have_text('Exercises')
