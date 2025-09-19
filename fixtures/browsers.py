@@ -5,7 +5,9 @@ from pages.authentication.registration_page import RegistrationPage
 from _pytest.fixtures import SubRequest
 from tools.playwright.pages import initialize_playwright_page
 from config import settings
+from tools.routes import AppRoute
 
+# PyCharm ругается что функция ничего не возвращает (бесит), добавил Generator
 @pytest.fixture
 def chromium_page(request: SubRequest, playwright: Playwright) -> Generator[Page, Any, None]:
     yield from initialize_playwright_page(playwright, test_name=request.node.name)
@@ -13,11 +15,11 @@ def chromium_page(request: SubRequest, playwright: Playwright) -> Generator[Page
 @pytest.fixture(scope="session")
 def initialize_browser_state(playwright : Playwright):
     browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
+    context = browser.new_context(base_url=settings.get_base_url())
     page = context.new_page()
 
     registration_page = RegistrationPage(page=page)
-    registration_page.visit('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/registration')
+    registration_page.visit(AppRoute.REGISTRATION)
     registration_page.form.fill(
         email=settings.test_user.email,
         username=settings.test_user.username,
@@ -29,9 +31,11 @@ def initialize_browser_state(playwright : Playwright):
     context.storage_state(path=settings.browser_state_file)
     browser.close()
 
+# PyCharm ругается что функция ничего не возвращает (бесит), добавил Generator
 @pytest.fixture(scope="function")
-def chromium_page_with_state(request: SubRequest, initialize_browser_state, playwright : Playwright) -> Generator[
-    Page, Any, None]:
+def chromium_page_with_state(
+        request: SubRequest, initialize_browser_state, playwright : Playwright
+) -> Generator[Page, Any, None]:
     yield from initialize_playwright_page(
         playwright,
         test_name=request.node.name,

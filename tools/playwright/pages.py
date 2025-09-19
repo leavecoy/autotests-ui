@@ -7,9 +7,13 @@ def initialize_playwright_page(
         playwright: Playwright,
         test_name: str,
         storage_state: str | None = None
-        ) -> Generator[Page, Any, None]:
+        ) -> Generator[Page, Any, None]: # PyCharm ругается что функция ничего не возвращает (бесит), добавил Generator
     browser = playwright.chromium.launch(headless=settings.headless)
-    context = browser.new_context(storage_state=storage_state, record_video_dir=settings.videos_dir)
+    context = browser.new_context(
+        base_url=settings.get_base_url(),
+        storage_state=storage_state,
+        record_video_dir=settings.videos_dir
+    )
     context.tracing.start(screenshots=True, snapshots=True, sources=True)
     page = context.new_page()
 
