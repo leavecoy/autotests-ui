@@ -2,6 +2,8 @@ from typing import Any, Generator
 from playwright.sync_api import Playwright, Page
 import allure
 from config import settings, Browser
+from tools.playwright.mocks import mock_static_resources
+
 
 def initialize_playwright_page(
         playwright: Playwright,
@@ -17,6 +19,7 @@ def initialize_playwright_page(
     )
     context.tracing.start(screenshots=True, snapshots=True, sources=True)
     page = context.new_page()
+    mock_static_resources(page)
 
     yield page
 
