@@ -46,3 +46,4 @@ def page_with_state(
         storage_state=settings.browser_state_file,
         browser_type=request.param
     )
+
