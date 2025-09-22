@@ -2,7 +2,6 @@ from config import settings
 import platform
 import sys
 
-
 def create_allure_environment_file():
     items = [f'{key}={value}' for key, value in settings.model_dump().items()]
     items.extend([
