@@ -60,6 +60,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: allure-results
+          path: allure-results/
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy report to Github Pages
         if: always()
